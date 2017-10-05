@@ -44,11 +44,15 @@
          }
       }
       
-      public function displayAllGames($direction){
-         /*$stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating From Games ORDER BY Title :Direction");
-         $stmt->bindParam(':Direction', $direction);
+      public function retrieveAllGames($direction){
+         if($direction == 'DESC'){
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating From Games ORDER BY Title DESC");
+         }else{
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating From Games ORDER BY Title ASC");
+         }
          $stmt->execute();
          $result = $stmt->fetchAll();
+         $i = 0; 
 
          foreach($result as $row){
             $stmt = $this->conn->prepare("SELECT Genre From GameGenre WHERE Title=:Title");
@@ -56,10 +60,18 @@
             $stmt->execute();
             $newResult = $stmt->fetchAll();
             $allGenre = "";
-            for($newResult as $newRow){
-               $allGenre = $allGenre + ', ' + $newRow['genre']; 
+            foreach($newResult as $newRow){
+               $data = $newRow['Genre'];
+               if($allGenre != ""){
+                  $allGenre = "$allGenre, $data"; 
+               }else{
+                  $allGenre = $data;
+               }
             }
-         }*/
+            $returnData[$i] = array("Title" => $row['Title'], "Console" => $row['Console'], "Genre" => $allGenre, 
+               "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
+         }
+         return $returnData;
       }
    }
 ?>
