@@ -55,7 +55,12 @@
                <td>Genre Type</td>
                <td>:</td>
                <?php         
-                  $myObj->displayGenreTypeinInputTag("<td>","</td>","checkbox");
+                  $result = $myObj->retrieveAllGenre();
+                  foreach($result as $row){
+                     $tempRowData = $row['genre'];
+                     echo "<td>" . $tempRowData . "</td>";
+                     echo "<td><input name=genre[] type=checkbox value=" . $tempRowData . "></td>";
+                  }
                ?>
             </tr>
             <tr>

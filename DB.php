@@ -12,18 +12,12 @@
     			echo "Connection failed: " . $e->getMessage();
     		}
       }
-		public function displayGenreTypeinInputTag($outerBeginTag, $outerEndTag, $inputType){
+		public function retrieveAllGenre(){
          $stmt = $this->conn->prepare("SELECT genre FROM Genres");
          $stmt->execute();
          $result = $stmt->fetchAll();
 
-         foreach($result as $row){
-            //echo $row['genre'];
-            $tempRowData = $row['genre'];
-            echo "$outerBeginTag$tempRowData$outerEndTag";
-            echo "$outerBeginTag<input name=genre[] type=$inputType value=$tempRowData>$outerEndTag";  
-         }
-
+         return $result;
       }
 
       public function enterData($gameName, $consoleName, $genre, $releaseDate, $rating){
