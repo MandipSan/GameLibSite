@@ -40,22 +40,21 @@
       
       public function retrieveAllGames($direction){
          if($direction == 'DESC'){
-            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating From Games ORDER BY Title DESC");
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games ORDER BY Title DESC");
          }else{
-            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating From Games ORDER BY Title ASC");
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games ORDER BY Title ASC");
          }
          $stmt->execute();
          $result = $stmt->fetchAll();
          $i = 0; 
 
          foreach($result as $row){
-            $stmt = $this->conn->prepare("SELECT Genre From GameGenre WHERE Title=:Title");
+            $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title");
             $stmt->bindParam(':Title', $row['Title']);
             $stmt->execute();
             $newResult = $stmt->fetchAll();
             $allGenre = "";
-            foreach($newResult as $newRow){
-               $data = $newRow['Genre'];
+            foreach($newResult as $newRow => $data){
                if($allGenre != ""){
                   $allGenre = "$allGenre, $data"; 
                }else{
@@ -67,5 +66,47 @@
          }
          return $returnData;
       }
+
+      public function deleteData($gameName){
+         $stmt = $this->conn->prepare("DELETE FROM Games WHERE Title = :Title");
+         $stmt->bindParam(':Title', $gameName);
+         $stmt->execute();
+      }
+
+      public function editData($gameName, $consoleName, $genre, $releaseDate, $rating){
+         $stmt = $this->conn->prepare("UPDATE Games SET Console = :Console, ReleaseDate = :ReleaseDate, Rating = :Rating
+            WHERE Title = :Title");
+         $stmt->bindParam(':Title', $gameName);
+         $stmt->bindParam(':Console', $consoleName);
+         $stmt->bindParam(':ReleaseDate', $releaseDate);
+         $stmt->bindParam(':Rating', $rating);
+         $stmt->execute();
+
+         $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = : Title");
+         $stmt->bindParam(':Title', $gameName);
+         $stmt->execute();
+         $result = $stmt->fetchAll();
+
+         $stmt = $this->conn->prepare("DELETE FROM GameGenre WHERE Title = :Title, Genre = :Genre");
+         $stmt->bindParam(':Title', $gameName);
+         foreach($result as $newRow => $data) {
+            if(!in_array($data, $genre)){
+               $stmt->bindParam(':Genre', $data);
+               $stmt->execute();
+            }
+         }
+         
+         $stmt = $this->conn->prepare("INSERT INTO GameGenre (Title, Genre) 
+            VALUES (:Title, :Genre)");
+         $stmt->bindParam(':Title', $gameName);
+         for($i=0; $i < count($genre); $i++){
+            if(!in_array($genre[$i], $result)){
+               $stmt->bindParam(':Genre', $genre[$i]);
+               $stmt->execute();
+            }
+         }
+      }
    }
 ?>
+
+
