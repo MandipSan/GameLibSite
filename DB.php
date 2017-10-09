@@ -56,13 +56,14 @@
             $allGenre = "";
             foreach($newResult as $newRow => $data){
                if($allGenre != ""){
-                  $allGenre = "$allGenre, $data"; 
+                  $allGenre = $allGenre . ", " . $data['Genre']; 
                }else{
-                  $allGenre = $data;
+                  $allGenre = $data['Genre'];
                }
             }
             $returnData[$i] = array("Title" => $row['Title'], "Console" => $row['Console'], "Genre" => $allGenre, 
                "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
+            $i++;
          }
          return $returnData;
       }
