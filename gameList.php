@@ -6,7 +6,6 @@
       $editSet = false;
       $myObj = new myDB();
 
-      $result = $myObj->retrieveAllGames("DESC");
 
       if(isset($_POST['addGame'])){
          header("location:addGame.php");
@@ -14,6 +13,13 @@
       if(isset($_POST['updateGame'])){
          $editSet = true;
       }
+      if(isset($_POST['deleteGame'])){
+         $tempArr = $_POST['modifyGame'];
+         for($i = 0; $i < count($tempArr); $i++){
+            $myObj->deleteData($tempArr[$i]);
+         }
+      }
+      $result = $myObj->retrieveAllGames("DESC");
    ?>
    <head>
       <h1> My Video Game </h1>
