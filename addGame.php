@@ -19,7 +19,11 @@
             echo "Missing Game Rating";
          }else{
             $myObj->enterData($_POST['gamename'], $_POST['consolename'], $arr, $_POST['date'], $_POST['rating']);
+            header("location:gameList.php");
          }
+      }
+      if(isset($_POST['Cancel'])){
+         header("location:gameList.php");
       }
    ?>
    <head>
