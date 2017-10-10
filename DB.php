@@ -49,22 +49,22 @@
          $i = 0; 
 
          foreach($result as $row){
-            $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title");
-            $stmt->bindParam(':Title', $row['Title']);
-            $stmt->execute();
-            $newResult = $stmt->fetchAll();
-            $allGenre = "";
-            foreach($newResult as $newRow => $data){
-               if($allGenre != ""){
-                  $allGenre = $allGenre . ", " . $data['Genre']; 
-               }else{
-                  $allGenre = $data['Genre'];
-               }
-            }
+            $allGenre = $this->retrieveGameGenres($row['Title']);
             $returnData[$i] = array("Title" => $row['Title'], "Console" => $row['Console'], "Genre" => $allGenre, 
                "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
             $i++;
          }
+         return $returnData;
+      }
+
+      public function retrieveGame($gameName){
+         $stmt = $this->conn->prepare("SELECT Console, ReleaseDate, Rating FROM Games WHERE Title=:Title");
+         $stmt->bindParam(':Title', $gameName);
+         $stmt->execute();
+         $result = $stmt->fetchAll();
+         $genre = $this->retrieveGameGenres($gameName);
+         $returnData[$i] = array("Console" => $row['Console'], "Genre" => $genre, 
+            "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
          return $returnData;
       }
 
@@ -106,6 +106,22 @@
                $stmt->execute();
             }
          }
+      }
+
+      private function retrieveGameGenres($gameName){
+         $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title");
+         $stmt->bindParam(':Title', $gameName);
+         $stmt->execute();
+         $newResult = $stmt->fetchAll();
+         $allGenre = "";
+         foreach($newResult as $newRow => $data){
+            if($allGenre != ""){
+               $allGenre = $allGenre . ", " . $data['Genre']; 
+            }else{
+               $allGenre = $data['Genre'];
+            }
+         }
+         return $allGenre;
       }
    }
 ?>
