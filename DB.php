@@ -1,6 +1,7 @@
 <?php
    class myDB {
       private $conn;
+
       public function __construct(){
          include ('connectionCred.php');
         	try {
@@ -12,8 +13,25 @@
     			echo "Connection failed: " . $e->getMessage();
     		}
       }
+
 		public function retrieveAllGenre(){
          $stmt = $this->conn->prepare("SELECT genre FROM Genres");
+         $stmt->execute();
+         $result = $stmt->fetchAll();
+
+         return $result;
+      }
+
+      public function retrieveAllConsole(){
+         $stmt = $this->conn->prepare("SELECT console FROM Console");
+         $stmt->execute();
+         $result = $stmt->fetchAll();
+
+         return $result;
+      }
+
+      public function retrieveAllRating(){
+         $stmt = $this->conn->prepare("SELECT rating FROM Rating");
          $stmt->execute();
          $result = $stmt->fetchAll();
 
