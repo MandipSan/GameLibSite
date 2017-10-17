@@ -13,6 +13,15 @@
       if(isset($_POST['updateGame'])){
          $editSet = true;
       }
+      if(isset($_POST['editGame'])){
+         session_start();
+         $_SESSION['games'] = $_POST['modifyGame'];
+         if($_POST['modifyGame'] != ""){
+            header("location:editGame.php");
+         }else{
+            $editSet = true;
+         }
+      }
       if(isset($_POST['deleteGame'])){
          $tempArr = $_POST['modifyGame'];
          for($i = 0; $i < count($tempArr); $i++){
