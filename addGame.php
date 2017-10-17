@@ -45,7 +45,7 @@
                   foreach($result as $row){
                      $tempRowData = $row['console'];
                      echo "<td>" . $tempRowData . "</td>";
-                     echo "<td><input name=consolename type=radio value=" . $tempRowData . "></td>";
+                     echo "<td><input name=consolename type=radio value=\"" . $tempRowData . "\"></td>";
                   }
                ?> 
             </tr>
@@ -74,7 +74,7 @@
                ?>
             </tr>
             <tr>
-               <td>Release Date(Year/Month/Day)</td>
+               <td>Release Date(Year-Month-Day)</td>
                <td>:</td>
                <td><input name="date" type="date"></td>
             </tr>
