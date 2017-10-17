@@ -80,8 +80,9 @@
          $stmt->bindParam(':Title', $gameName);
          $stmt->execute();
          $result = $stmt->fetchAll();
+         $row = $result[0];
          $genre = $this->retrieveGameGenres($gameName);
-         $returnData[$i] = array("Console" => $row['Console'], "Genre" => $genre, 
+         $returnData = array("Console" => $row['Console'], "Genre" => $genre, 
             "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
          return $returnData;
       }
