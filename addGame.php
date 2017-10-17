@@ -40,20 +40,14 @@
             <tr>
                <td>Console Name</td>
                <td>:</td>
-               <td>Playstation </td>
-               <td><input name="consolename" type="radio" value="Playstation"></td>
-               <td>Playstation 2</td>
-               <td><input name="consolename" type="radio" value="Playstation2"></td>
-               <td>Playstation 3</td>
-               <td><input name="consolename" type="radio" value="Playstation3"></td>
-               <td>Playstation 4</td>
-               <td><input name="consolename" type="radio" value="Playstation4" checked></td>
-               <td>XBox </td>
-               <td><input name="consolename" type="radio" value="XBox"></td>
-               <td>XBox360 </td>
-               <td><input name="consolename" type="radio" value="XBox360"></td>
-               <td>XBoxOne </td>
-               <td><input name="consolename" type="radio" value="XBoxOne"></td>
+               <?php
+                  $result = $myObj->retrieveAllConsole();
+                  foreach($result as $row){
+                     $tempRowData = $row['console'];
+                     echo "<td>" . $tempRowData . "</td>";
+                     echo "<td><input name=consolename type=radio value=" . $tempRowData . "></td>";
+                  }
+               ?> 
             </tr>
             <tr>
                <td>Genre Type</td>
@@ -70,11 +64,17 @@
             <tr>
                <td>Rating</td>
                <td>:</td>
-               <td>Teen</td>
-               <td><input name="rating" type="radio" value="Teen" checked></td>
+               <?php         
+                  $result = $myObj->retrieveAllRating();
+                  foreach($result as $row){
+                     $tempRowData = $row['rating'];
+                     echo "<td>" . $tempRowData . "</td>";
+                     echo "<td><input name=rating type=radio value=" . $tempRowData . "></td>";
+                  }
+               ?>
             </tr>
             <tr>
-               <td>Release Date</td>
+               <td>Release Date(Year/Month/Day)</td>
                <td>:</td>
                <td><input name="date" type="date"></td>
             </tr>
