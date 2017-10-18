@@ -7,8 +7,8 @@
 
       session_start();
       $gameArray = $_SESSION['games'];
-      /*if(isset($_POST['Submit'])){
-         $arr = $_POST['genre'];
+      if(isset($_POST['Submit'])){
+        /* $arr = $_POST['genre'];
          if(!isset($_POST['gamename'])){
             echo "Missing Game Title";
          }elseif(empty($arr)){
@@ -22,11 +22,19 @@
          }else{
             $myObj->enterData($_POST['gamename'], $_POST['consolename'], $arr, $_POST['date'], $_POST['rating']);
             header("location:gameList.php");
+         }*/
+         for($i = 0; $i < count($gameArray); $i++){
+            $pConsole = $gameArray[$i] . "consolename";
+            $pRating = $gameArray[$i] . "rating";
+            $pReleaseDate = $gameArray[$i] . "date";
+            $pGenre = $gameArray[$i] . "genre";
+            $myObj->editData($gameArray[$i], $_POST[$pConsole], $_POST[$pGenre], $_POST[$pReleaseDate], $_POST[$pRating]);
+            header("location:gameList.php");
          }
       }
       if(isset($_POST['Cancel'])){
          header("location:gameList.php");
-      }*/
+      }
    ?>
    <head>
       <h1> Edit Video Games </h1>

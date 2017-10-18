@@ -43,8 +43,7 @@
             VALUES (:Title, :Console, :ReleaseDate, :Rating)");
          $stmt->bindParam(':Title', $gameName);
          $stmt->bindParam(':Console', $consoleName);
-         $test = '1999-01-01';
-         $stmt->bindParam(':ReleaseDate', $test);
+         $stmt->bindParam(':ReleaseDate', $releaseDate);
          $stmt->bindParam(':Rating', $rating);
          $stmt->execute();
          $stmt = $this->conn->prepare("INSERT INTO GameGenre (Title, Genre) 
@@ -102,28 +101,30 @@
          $stmt->bindParam(':Rating', $rating);
          $stmt->execute();
 
-         $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = : Title");
+         $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title");
          $stmt->bindParam(':Title', $gameName);
          $stmt->execute();
          $result = $stmt->fetchAll();
 
-         $stmt = $this->conn->prepare("DELETE FROM GameGenre WHERE Title = :Title, Genre = :Genre");
+         $stmt = $this->conn->prepare("DELETE FROM GameGenre WHERE Title = :Title AND Genre = :Genre");
          $stmt->bindParam(':Title', $gameName);
-         foreach($result as $newRow => $data) {
-            if(!in_array($data, $genre)){
-               $stmt->bindParam(':Genre', $data);
+         foreach($result as $newRow) {
+            if(!in_array($newRow['Genre'], $genre)){
+               $stmt->bindParam(':Genre', $newRow['Genre']);
                $stmt->execute();
+            }else{
+               $key = array_search($newRow['Genre'],$genre);
+               unset($genre[$key]);
             }
          }
+         $genre = array_values($genre);
          
          $stmt = $this->conn->prepare("INSERT INTO GameGenre (Title, Genre) 
             VALUES (:Title, :Genre)");
          $stmt->bindParam(':Title', $gameName);
          for($i=0; $i < count($genre); $i++){
-            if(!in_array($genre[$i], $result)){
-               $stmt->bindParam(':Genre', $genre[$i]);
-               $stmt->execute();
-            }
+            $stmt->bindParam(':Genre', $genre[$i]);
+            $stmt->execute();
          }
       }
 
