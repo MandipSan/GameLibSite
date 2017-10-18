@@ -46,9 +46,9 @@
                   $tempRowData = $row['console'];
                   echo "<td>" . $tempRowData . "</td>";
                   if($tempRowData ==  $result['Console']){
-                     echo "<td><input name=" . $gameArray[$i] . "consolename type=radio value=" . $tempRowData . " checked></td>";
+                     echo "<td><input name=\"" . $gameArray[$i] . "consolename\" type=radio value=\"" . $tempRowData . "\" checked></td>";
                   }else{
-                     echo "<td><input name=" . $gameArray[$i] . "consolename type=radio value=" . $tempRowData . "></td>";
+                     echo "<td><input name=\"" . $gameArray[$i] . "consolename\" type=radio value=\"" . $tempRowData . "\"></td>";
                   }
                }
 					echo "</tr>";
@@ -60,9 +60,9 @@
                   $tempRowData = $row['genre'];
                   echo "<td>" . $tempRowData . "</td>";
                   if(in_array($tempRowData, $gameGenres)){
-                     echo "<td><input name=" . $gameArray[$i] . "genre[] type=checkbox value=" . $tempRowData . " checked></td>";
+                     echo "<td><input name=\"" . $gameArray[$i] . "genre[]\" type=checkbox value=\"" . $tempRowData . "\" checked></td>";
                   }else{
-                     echo "<td><input name=" . $gameArray[$i] . "genre[] type=checkbox value=" . $tempRowData . "></td>";
+                     echo "<td><input name=\"" . $gameArray[$i] . "genre[]\" type=checkbox value=\"" . $tempRowData . "\"></td>";
                   }
                }
                echo "</tr>";
@@ -73,15 +73,15 @@
                   $tempRowData = $row['rating'];
                   echo "<td>" . $tempRowData . "</td>";
                   if($tempRowData ==  $result['Rating']){
-                     echo "<td><input name=" . $gameArray[$i] . "rating type=radio value=" . $tempRowData . " checked></td>";
+                     echo "<td><input name=\"" . $gameArray[$i] . "rating\" type=radio value=\"" . $tempRowData . "\" checked></td>";
                   }else{
-                     echo "<td><input name=" . $gameArray[$i] . "rating type=radio value=" . $tempRowData . "></td>";
+                     echo "<td><input name=\"" . $gameArray[$i] . "rating\" type=radio value=\"" . $tempRowData . "\"></td>";
                   }
                }
                echo "</tr>";
 
                echo "<tr><td>Release Date(Year-Month-Day)</td><td>:</td>";
-               echo "<td><input name=" . $gameArray[$i] . "date type=date value=" . $result['ReleaseDate'] . "></td>"; 
+               echo "<td><input name=\"" . $gameArray[$i] . "date\" type=date value=\"" . $result['ReleaseDate'] . "\"></td>"; 
                echo "</tr>";
 
                echo "</table>";

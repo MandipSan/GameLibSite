@@ -57,7 +57,7 @@
                   foreach($result as $row){
                      $tempRowData = $row['genre'];
                      echo "<td>" . $tempRowData . "</td>";
-                     echo "<td><input name=genre[] type=checkbox value=" . $tempRowData . "></td>";
+                     echo "<td><input name=genre[] type=checkbox value=\"" . $tempRowData . "\"></td>";
                   }
                ?>
             </tr>
@@ -69,7 +69,7 @@
                   foreach($result as $row){
                      $tempRowData = $row['rating'];
                      echo "<td>" . $tempRowData . "</td>";
-                     echo "<td><input name=rating type=radio value=" . $tempRowData . "></td>";
+                     echo "<td><input name=rating type=radio value=\"" . $tempRowData . "\"></td>";
                   }
                ?>
             </tr>
