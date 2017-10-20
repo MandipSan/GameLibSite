@@ -7,22 +7,8 @@
 
       session_start();
       $gameArray = $_SESSION['games'];
+
       if(isset($_POST['Submit'])){
-        /* $arr = $_POST['genre'];
-         if(!isset($_POST['gamename'])){
-            echo "Missing Game Title";
-         }elseif(empty($arr)){
-            echo "Missing Game Genre";
-         }elseif(!isset($_POST['consolename'])){
-            echo "Missing Console Type";
-         }elseif(!isset($_POST['date'])){
-            echo "Missing Release Date";
-         }elseif(!isset($_POST['rating'])){
-            echo "Missing Game Rating";
-         }else{
-            $myObj->enterData($_POST['gamename'], $_POST['consolename'], $arr, $_POST['date'], $_POST['rating']);
-            header("location:gameList.php");
-         }*/
          for($i = 0; $i < count($gameArray); $i++){
             $pConsole = $gameArray[$i] . "consolename";
             $pRating = $gameArray[$i] . "rating";
@@ -36,6 +22,10 @@
          header("location:gameList.php");
       }
    ?>
+   <script type="text/javascript" src="formValidator.js"></script>
+   <script type="text/javascript" >
+      var jsGameArray = <?php echo json_encode($gameArray); ?>;
+   </script>
    <head>
       <h1> Edit Video Games </h1>
    </head>
@@ -95,7 +85,7 @@
                echo "</table>";
             }
          ?>
-         <input type="submit" name="Submit" value="Submit">
+         <input type="submit" name="Submit" value="Submit" onclick="return multValidator('form1',jsGameArray);">
          <input type="submit" name="Cancel" value="Cancel">
       </form>
    </body>
