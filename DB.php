@@ -55,12 +55,32 @@
          }
       }
       
-      public function retrieveAllGames($direction){
-         if($direction == 'DESC'){
-            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games ORDER BY Title DESC");
+      public function retrieveAllGames($orderByCol, $orderByDir, $consoleIn, $genreIn, $ratingIn){
+         $orderByStmt = "ORDER BY " . $orderByCol . " " . $orderByDir;
+         $setAnd = "";
+         if(!empty($consoleIn)){
+            $consoleInStmt = "Console IN ( " . implode(",",$consoleIn) . ")";
+            $setAnd = "AND";
          }else{
-            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games ORDER BY Title ASC");
+            $consoleInStmt = "";
          }
+         if(!empty($genreIn)){
+            $genreInStmt = $setAnd . " Genre IN ( " . implode(",",$genreIn) . ")";
+            $setAnd = "AND";
+         }else{
+            $genreInStmt = "";
+         }
+         if(!empty($ratingIn)){
+            $ratingInStmt = $setAnd . "Rating IN ( " . implode(",",$ratingIn) . ")";
+         }else{
+            $ratingInStmt = "";
+         }
+         if($consoleInStmt != "" || $genreInStmt != "" || $ratingInStmt != ""){
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games WHERE " . $consoleInStmt . $genreInStmt . $ratingIn . $orderByStmt);
+         }else{
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games " . $orderByStmt);
+         }
+
          $stmt->execute();
          $result = $stmt->fetchAll();
          $i = 0; 
