@@ -56,22 +56,22 @@
       }
       
       public function retrieveAllGames($orderByCol, $orderByDir, $consoleIn, $genreIn, $ratingIn){
-         $orderByStmt = "ORDER BY " . $orderByCol . " " . $orderByDir;
+         $orderByStmt = " ORDER BY " . $orderByCol . " " . $orderByDir;
          $setAnd = "";
          if(!empty($consoleIn)){
-            $consoleInStmt = "Console IN ( " . implode(",",$consoleIn) . ")";
+            $consoleInStmt = "Console IN ( " . $this->setUpInClause($consoleIn) . ")";
             $setAnd = "AND";
          }else{
             $consoleInStmt = "";
          }
          if(!empty($genreIn)){
-            $genreInStmt = $setAnd . " Genre IN ( " . implode(",",$genreIn) . ")";
+            $genreInStmt = $setAnd . " Genre IN ( " . $this->setUpInClause($consoleIn) . ")";
             $setAnd = "AND";
          }else{
             $genreInStmt = "";
          }
          if(!empty($ratingIn)){
-            $ratingInStmt = $setAnd . "Rating IN ( " . implode(",",$ratingIn) . ")";
+            $ratingInStmt = $setAnd . "Rating IN ( " . $this->setUpInClause($consoleIn) . ")";
          }else{
             $ratingInStmt = "";
          }
@@ -162,6 +162,14 @@
             }
          }
          return $allGenre;
+      }
+      private function setUpInClause($data){
+         $returnData = "";
+         foreach($data as $newData){
+            $returnData = "'" . $newData . "'," . $returnData;
+         }
+         $returnData = rtrim($returnData,",");
+         return $returnData;
       }
    }
 ?>
