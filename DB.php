@@ -60,23 +60,17 @@
          $setAnd = "";
          if(!empty($consoleIn)){
             $consoleInStmt = "Console IN ( " . $this->setUpInClause($consoleIn) . ")";
-            $setAnd = "AND";
+            $setAnd = " AND ";
          }else{
             $consoleInStmt = "";
          }
-         if(!empty($genreIn)){
-            $genreInStmt = $setAnd . " Genre IN ( " . $this->setUpInClause($consoleIn) . ")";
-            $setAnd = "AND";
-         }else{
-            $genreInStmt = "";
-         }
          if(!empty($ratingIn)){
-            $ratingInStmt = $setAnd . "Rating IN ( " . $this->setUpInClause($consoleIn) . ")";
+            $ratingInStmt = $setAnd . "Rating IN ( " . $this->setUpInClause($ratingIn) . ")";
          }else{
             $ratingInStmt = "";
          }
-         if($consoleInStmt != "" || $genreInStmt != "" || $ratingInStmt != ""){
-            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games WHERE " . $consoleInStmt . $genreInStmt . $ratingIn . $orderByStmt);
+         if($consoleInStmt != "" || $ratingInStmt != ""){
+            $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games WHERE " . $consoleInStmt  . $ratingInStmt . $orderByStmt);
          }else{
             $stmt = $this->conn->prepare("SELECT Title, Console, ReleaseDate, Rating FROM Games " . $orderByStmt);
          }
@@ -86,10 +80,12 @@
          $i = 0; 
 
          foreach($result as $row){
-            $allGenre = $this->retrieveGameGenres($row['Title']);
-            $returnData[$i] = array("Title" => $row['Title'], "Console" => $row['Console'], "Genre" => $allGenre, 
-               "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
-            $i++;
+            $allGenre = $this->retrieveGameGenres($row['Title'], $genreIn);
+            if(!empty($allGenre)){
+               $returnData[$i] = array("Title" => $row['Title'], "Console" => $row['Console'], "Genre" => $allGenre, 
+                  "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
+               $i++;
+            }
          }
          return $returnData;
       }
@@ -100,7 +96,7 @@
          $stmt->execute();
          $result = $stmt->fetchAll();
          $row = $result[0];
-         $genre = $this->retrieveGameGenres($gameName);
+         $genre = $this->retrieveGameGenres($gameName,"");
          $returnData = array("Console" => $row['Console'], "Genre" => $genre, 
             "ReleaseDate" => $row['ReleaseDate'], "Rating" => $row['Rating']);
          return $returnData;
@@ -148,8 +144,12 @@
          }
       }
 
-      private function retrieveGameGenres($gameName){
-         $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title");
+      private function retrieveGameGenres($gameName, $genreIn){
+         if(empty($genreIn)){
+            $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title");
+         }else{
+            $stmt = $this->conn->prepare("SELECT Genre FROM GameGenre WHERE Title = :Title AND Genre IN ( " . $this->setUpInClause($genreIn) . ")");
+         }
          $stmt->bindParam(':Title', $gameName);
          $stmt->execute();
          $newResult = $stmt->fetchAll();
