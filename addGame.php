@@ -16,6 +16,7 @@
    ?>
    <script type="text/javascript" src="formValidator.js"></script>
    <head>
+      <link rel="stylesheet" type="text/css" href="pageStyle.css">
       <h1> Add Video Game </h1>
    </head>
    <body>
@@ -26,39 +27,36 @@
                <td>:</td>
                <td><input name="gamename" type="text"></td>
             </tr>
-            <tr>
+            <tr class="addPageOption">
                <td>Console Name</td>
                <td>:</td>
                <?php
                   $result = $myObj->retrieveAllConsole();
                   foreach($result as $row){
                      $tempRowData = $row['console'];
-                     echo "<td>" . $tempRowData . "</td>";
-                     echo "<td><input name=consolename type=radio value=\"" . $tempRowData . "\" checked></td>";
+                     echo "<td>" . $tempRowData . "<input name=consolename type=radio value=\"" . $tempRowData . "\" checked></td>";
                   }
                ?> 
             </tr>
-            <tr>
+            <tr class="addPageOption">
                <td>Genre Type</td>
                <td>:</td>
                <?php         
                   $result = $myObj->retrieveAllGenre();
                   foreach($result as $row){
                      $tempRowData = $row['genre'];
-                     echo "<td>" . $tempRowData . "</td>";
-                     echo "<td><input name=genre[] type=checkbox value=\"" . $tempRowData . "\"></td>";
+                     echo "<td>" . $tempRowData . "<input name=genre[] type=checkbox value=\"" . $tempRowData . "\"></td>";
                   }
                ?>
             </tr>
-            <tr>
+            <tr class="addPageOption">
                <td>Rating</td>
                <td>:</td>
                <?php         
                   $result = $myObj->retrieveAllRating();
                   foreach($result as $row){
                      $tempRowData = $row['rating'];
-                     echo "<td>" . $tempRowData . "</td>";
-                     echo "<td><input name=rating type=radio value=\"" . $tempRowData . "\" checked></td>";
+                     echo "<td>" . $tempRowData . "<input name=rating type=radio value=\"" . $tempRowData . "\" checked></td>";
                   }
                ?>
             </tr>
